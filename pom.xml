@@ -108,7 +108,11 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <addModules>java.base,java.net.http,java.logging</addModules>
+                            <addModules>
+                                <addModule>java.base</addModule>
+                                <addModule>java.net.http</addModule>
+                                <addModule>java.logging</addModule>
+                            </addModules>
                             <addOptions>
                                 <addOption>--compress=2</addOption>
                                 <addOption>--strip-debug</addOption>
