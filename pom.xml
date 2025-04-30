@@ -133,10 +133,6 @@
                             <imageName>httpcli</imageName>
                             <mainClass>io.github.christopheclermont.HttpCli</mainClass>
                             <graalVmHome>${project.build.directory}/jlink</graalVmHome>
-                            <buildArgs>
-                                <buildArg>--no-fallback</buildArg>   <!-- Pas de code de secours Java -->
-                                <buildArg>--strip-debug</buildArg>   <!-- Retire symboles de debug -->
-                            </buildArgs>
                         </configuration>
                     </plugin>
                 </plugins>
