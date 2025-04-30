@@ -109,12 +109,13 @@
                         </executions>
                         <configuration>
                             <addModules>java.base,java.net.http,java.logging</addModules>
-                            <jlinkOptions>
-                                <jlinkOption>--compress=2</jlinkOption>
-                                <jlinkOption>--strip-debug</jlinkOption>
-                                <jlinkOption>--no-header-files</jlinkOption>
-                                <jlinkOption>--no-man-pages</jlinkOption>
-                            </jlinkOptions>
+                            <addOptions>
+                                <addOption>--compress=2</addOption>
+                                <addOption>--strip-debug</addOption>
+                                <addOption>--no-header-files</addOption>
+                                <addOption>--no-man-pages</addOption>
+                            </addOptions>
+                            <classifier>jlink</classifier>
                             <outputDirectory>${project.build.directory}/jlink</outputDirectory>
                         </configuration>
                     </plugin>
