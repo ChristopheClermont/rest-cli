@@ -2,7 +2,7 @@ name: Build Native Images
 
 on:
   push:
-    branches: [ "${{ github.event.repository.default_branch }}" ]
+    branches: [ main ]
   pull_request:
   workflow_dispatch:
 
