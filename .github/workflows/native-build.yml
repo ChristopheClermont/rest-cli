@@ -1,0 +1,41 @@
+name: Build Native Images
+
+on:
+  push:
+    branches: [ "${{ github.event.repository.default_branch }}" ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
+        arch: [ x64, arm64 ]
+        exclude:
+          - os: windows-latest
+            arch: arm64 # Skip Windows ARM64 (unsupported)
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+          distribution: 'graalvm'
+          cache: 'maven'
+
+      - name: Verify Native-Image
+        run: native-image --version
+
+      - name: Build Native Executable
+        run: mvn -Pnative clean package --no-transfer-progress
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: httpcli-${{ matrix.os }}-${{ matrix.arch }}
+          path: target/httpcli${{ runner.os == 'Windows' && '.exe' || '' }}
