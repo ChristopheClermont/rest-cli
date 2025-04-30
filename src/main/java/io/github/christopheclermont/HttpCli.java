@@ -22,8 +22,12 @@ import java.util.List;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Command(name = "httpcli", mixinStandardHelpOptions = true,
-        description = "Simple HTTP REST CLI with native-image support")
+@Command(
+        name = "rest-cli",
+        mixinStandardHelpOptions = true,       // <-- active --help et --version
+        version = "rest-cli 1.0",
+        description = "HTTP client for REST APIs"
+)
 public class HttpCli implements Runnable {
 
     @Option(names = "--url", required = true, description = "Request URL")
@@ -145,4 +149,5 @@ public class HttpCli implements Runnable {
         if (v == null || v.isEmpty()) throw new IllegalArgumentException(name + " env var missing");
         return v;
     }
+
 }

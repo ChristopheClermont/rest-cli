@@ -78,6 +78,10 @@
                     <version>3.0.0</version>
                 </plugin>
                 <plugin>
+                    <artifactId>maven-jlink-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+                <plugin>
                     <groupId>org.graalvm.buildtools</groupId>
                     <artifactId>native-maven-plugin</artifactId>
                     <version>0.10.6</version>
@@ -92,18 +96,46 @@
             <build>
                 <plugins>
                     <plugin>
+                        <artifactId>maven-jlink-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <executions>
+                            <execution>
+                                <id>create-custom-jre</id>
+                                <goals>
+                                    <goal>jlink</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <addModules>java.base,java.net.http,java.logging</addModules>
+                            <jlinkOptions>
+                                <jlinkOption>--compress=2</jlinkOption>
+                                <jlinkOption>--strip-debug</jlinkOption>
+                                <jlinkOption>--no-header-files</jlinkOption>
+                                <jlinkOption>--no-man-pages</jlinkOption>
+                            </jlinkOptions>
+                            <outputDirectory>${project.build.directory}/jlink</outputDirectory>
+                        </configuration>
+                    </plugin>
+                    <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
                         <artifactId>native-maven-plugin</artifactId>
                         <executions>
                             <execution>
                                 <goals>
-                                    <goal>build</goal>
+                                    <goal>compile-no-fork</goal>
                                 </goals>
                             </execution>
                         </executions>
                         <configuration>
                             <imageName>httpcli</imageName>
                             <mainClass>io.github.christopheclermont.HttpCli</mainClass>
+                            <graalVmHome>${project.build.directory}/jlink</graalVmHome>
+                            <buildArgs>
+                                <buildArg>--no-fallback</buildArg>   <!-- Pas de code de secours Java -->
+                                <buildArg>--strip-debug</buildArg>   <!-- Retire symboles de debug -->
+                            </buildArgs>
                         </configuration>
                     </plugin>
                 </plugins>
